@@ -192,12 +192,18 @@ EDDR PM (Edge-Driven Dissected Rectangle Pattern Matching) 的范式转换：
 
 | 操作 | 含义 | 输出 |
 |------|------|------|
-| `LENGTH(edge, d)` | 沿边方向延伸距离 d | 矩形 |
-| `WIDTH(edge, d)` | 垂直于边方向扩展 d | 矩形 |
-| `SPACE(edge1, edge2)` | 两条平行边之间的间距区域 | 矩形 |
-| `ANGLE(edge1, edge2)` | 两条相交边之间的夹角区域 | 三角形/梯形 |
+| `LENGTH(E, RO, d)` | 筛选长度为 d 的边 (RO = ==/>=/<=) | 边集 |
+| `ANGLE(E, RO, v)` | 筛选夹角为 v 的边（如 90° corner） | 边集 |
+| `WIDTH(E1, E2, RO, w)` | 从两组平行边生成宽度为 w 的矩形区域 | 矩形 |
+| `SPACE(E1, E2, RO, s)` | 从两组平行边生成间距为 s 的矩形区域 | 矩形 |
 
-这些操作的组合可覆盖任意 polygon 的**完整几何覆盖**。
+其中 LENGTH 和 ANGLE 是**边过滤器**，WIDTH 和 SPACE 是**矩形生成器**。一个完整的 pattern 描述流程为：
+```
+E1 = LENGTH(M1, ==, a)       // 筛选长度 = a 的边
+E2 = LENGTH(M1, ==, b)       // 筛选长度 = b 的边
+P1 = WIDTH(E1, E2, M1, ==, w)  // 在 E1 和 E2 之间生成宽 w 的矩形 member
+```
+四种操作的组合可覆盖任意 polygon 的**完整几何覆盖**。
 
 ### 4.3 Rectangle Dissection 算法
 
